@@ -1,0 +1,8 @@
+{
+  "files.associations": {
+    "cmath": "cpp",
+    "ostream": "cpp",
+    "editor.wordWrap": "on",
+  },
+  "python.linting.enabled": false
+}
