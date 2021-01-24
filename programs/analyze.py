@@ -57,7 +57,7 @@ methods.equalization()
 
 # 類似色統合
 # imgに入れるんじゃなくてカラーラベリングするときだけ使う方がよい？？？
-methods.clustering()
+# methods.clustering()
 
 # カラーラベリング
 # methods.labeling()
@@ -85,4 +85,5 @@ mask = methods.rejection()
 _lnd,_fld = methods.integration(mask,lnd,fld)
 
 # 精度評価
+#   - 領域単位で評価するのもあり
 # methods.evaluation(_lnd,_fld)

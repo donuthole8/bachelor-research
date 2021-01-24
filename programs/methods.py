@@ -183,9 +183,9 @@ def edge():
   # 前処理済み画像に対してエッジ抽出
   # dst = cv2.cvtColor(img.copy(), cv2.COLOR_BGR2GRAY)
 
-  canny = cv2.Canny(dst,100,150,5)
-  sobelx = cv2.Sobel(dst,cv2.CV_64F,1,0,ksize=5)
-  sobely = cv2.Sobel(dst,cv2.CV_64F,0,1,ksize=5)
+  canny = cv2.Canny(dst,100,450,5)
+  sobelx = cv2.Sobel(dst,cv2.CV_64F,1,0,ksize=3)
+  sobely = cv2.Sobel(dst,cv2.CV_64F,0,1,ksize=3)
   sobel = np.sqrt(sobelx**2 + sobely**2)
   laplacian = cv2.Laplacian(dst,cv2.CV_64F)
   
@@ -280,14 +280,25 @@ def rejection():
   _sky,_veg = np.full((h,w), 255),np.full((h,w), 255)
   _rbl,_bld = np.full((h,w), 255),np.full((h,w), 255)
   mask = np.full((h,w), 255)
-  _dis = cv2.imread('results/tex/dissimilarity.png', cv2.IMREAD_COLOR)
-  _edge = cv2.imread('results/edge/canny.png', cv2.IMREAD_COLOR)
+  lab,hsv = cv2.cvtColor(img,cv2.COLOR_BGR2Lab),cv2.cvtColor(img,cv2.COLOR_BGR2HSV)
+  # _dis,_edge = cv2.imread('results/tex/dissimilarity.png', cv2.IMREAD_COLOR),cv2.imread('results/edge/canny.png', cv2.IMREAD_COLOR)
+  _dis,_edge = cv2.imread('results/tex/dissimilarity.png', cv2.IMREAD_COLOR),cv2.imread('results/edge/sobel.png', cv2.IMREAD_COLOR)
+
+  # hh,ss,vv = cv2.split(hsv)
+  # ll,aa,bb = cv2.split(lab)
+
+  # cv2.imwrite('sikiso.png',np.dstack((np.dstack((hh,hh)),hh)))
+  # cv2.imwrite('saido.png',np.dstack((np.dstack((ss,ss)),ss)))
+  # cv2.imwrite('meido.png',np.dstack((np.dstack((vv,vv)),vv)))
+  # cv2.imwrite('l.png',np.dstack((np.dstack((ll,ll)),ll)))
+  # cv2.imwrite('a.png',np.dstack((np.dstack((aa,aa)),aa)))
+  # cv2.imwrite('b.png',np.dstack((np.dstack((bb,bb)),bb)))
+
 
   # 領域単位での投票処理
   for l in range(1,label):
     idx = np.where(dummy==l)
 
-    lab,hsv = cv2.cvtColor(img,cv2.COLOR_BGR2Lab),cv2.cvtColor(img,cv2.COLOR_BGR2HSV)
     Lp,ap,bp = np.split(lab[idx],3,axis=1)
     hp,sp,vp = np.split(hsv[idx],3,axis=1)
     _bo,_go,_ro = np.split(org[idx],3,axis=1)
@@ -305,25 +316,28 @@ def rejection():
     # 瓦礫
     dis = np.split(_dis[idx],3,axis=1)[0]
     edge = np.split(_edge[idx],3,axis=1)[0]
-    dp = (np.count_nonzero(dis>200))/(np.count_nonzero(dummy==l))
-    ep = (np.count_nonzero(edge==255))/(np.count_nonzero(dummy==l))
+    dp = (np.count_nonzero(dis>220))/(np.count_nonzero(dummy==l))
+    ep = (np.count_nonzero(edge>150))/(np.count_nonzero(dummy==l))
+
+    # rubble = (ep>0.375)
+    # rubble = (dp>0.8)&(ep>0.25)
+    # rubble = (dp>0.7)&(ep>0.25)
+    # rubble = (gsi>0.5)&(ep>0.3)
+    # sobelで
+    rubble = (ep>0.35)
+
     
-    # _rubble = ((dis>120)&(ap>120)&(Lp<140))
-
-    # _rubble = ((dis>120)&(ap>120)&(Lp<140))
-    # print(_rubble)
-
-    # _landslide,_flooded = landslide[idx],flooded[idx]
-    # rubble = _rubble&(~((_landslide)&(_flooded)))
-    # rubble = (ep>0.35)
-    rubble = (dp>0.7)&(ep>0.3)
     
     # 建物
     # L,S = 0,np.count_nonzero(dm==l)
     # irr = L**2/(4*np.pi*S)
     _ro[np.where((_ro+_bo+_go)==0)] = 1
     gsi = ((_ro-_bo))/(_ro+_bo+_go)
+
+    # rubble = (gsi>0.5)&(dis>0.8)
+
     _building = (gsi<0.15)
+    # _building = sp<100
     building = (_building)&(~sky)&(~vegitation)
     # building = (_building)
 
@@ -335,10 +349,10 @@ def rejection():
       _veg[idx],mask[idx] = 0,0
     # if (np.count_nonzero(rubble)>np.count_nonzero(~rubble)):
     if (rubble):
-      br[idx],gr[idx],rr[idx] = (bo[idx]),(go[idx]),(ro[idx]*al+250*(1-al))
+      br[idx],gr[idx],rr[idx] = (bo[idx]*al+250*(1-al)),(go[idx]),(ro[idx]*al+100*(1-al))
       _rbl[idx],mask[idx] = 0,0
     if (np.count_nonzero(building)>np.count_nonzero(~building)):
-      bb[idx],gb[idx],rb[idx] = (bo[idx]),(go[idx]),(ro[idx]*al+250*(1-al))
+      bb[idx],gb[idx],rb[idx] = (bo[idx]),(go[idx]+100*(1-al)),(ro[idx]*al)
       _bld[idx],mask[idx] = 0,0
 
   # print(np.where(dm==1))
