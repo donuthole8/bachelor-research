@@ -1,0 +1,25 @@
+\begin{thebibliography}{1}
+
+\bibitem{art01}
+江口毅, 三浦房紀.
+\newblock
+  {衛星リモートセンシングを用いた地震および豪雨による斜面崩壊発生箇所の早期発見手法}.
+\newblock 土木学会論文集F6（安全問題）, Vol. 72, No. 1, 11-20,
+  2016.
+
+\bibitem{art02}
+中山駿, 佐治斉.
+\newblock {空撮画像を用いた土砂検出}.
+\newblock 静岡大学情報学部情報科学科佐治研究室, 2019.
+
+\bibitem{art03}
+雨宮輝明, 佐治斉.
+\newblock {浸水時における道路領域解析}.
+\newblock 静岡大学情報学部情報科学科佐治研究室, 2017.
+
+\bibitem{web01}
+国土交通省国土地理院.
+\newblock {平成29年７月九州北部豪雨に関する情報}.
+\newblock \url{https://www.gsi.go.jp/BOUSAI/H29hukuoka_ooita-heavyrain.html}.
+
+\end{thebibliography}

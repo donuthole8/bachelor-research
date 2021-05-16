@@ -1,0 +1,165 @@
+\documentclass[a4paper]{jreport}	% 日本語の場合
+
+\usepackage{masterThesisJa-Ja}
+
+% \usepackage{graphicx}
+\usepackage{xcolor, color}
+\usepackage{here}
+\usepackage{ascmac}
+\usepackage{amsmath,amsfonts}
+\usepackage{bm}
+\usepackage{multirow,multicol}
+\usepackage{subfiles}
+\usepackage[labelformat=parens]{subfig}
+\usepackage[hidelinks]{hyperref}
+\usepackage{diagbox}
+\usepackage{hhline}
+\usepackage{caption}
+\usepackage{indentfirst}
+\usepackage[dvipdfmx]{graphicx}
+\usepackage{cases}
+% \usepackage{breqn}
+
+% % serifフォント（日本語）
+% \setCJKmainfont[BoldFont={NotoSansCJKjp-Medium}]{NotoSerifCJKjp-Light}
+% % sans-serifフォント（日本語）
+% \setCJKsansfont[BoldFont={NotoSansCJKjp-Medium}]{NotoSansCJKjp-Light}
+% % serifフォント（欧文）
+% \setmainfont[BoldFont={NotoSansCJKjp-Medium}]{NotoSerifCJKjp-Light}
+% % sans-serifフォント（欧文）
+% \setsansfont[BoldFont={NotoSansCJKjp-Medium}]{NotoSansCJKjp-Light}
+
+% % \usepackage{fontspec}
+% \setCJKmainfont{Yu Mincho}
+% % sans-serifフォント（日本語）
+% \setCJKsansfont{Yu Gothic}
+% % serifフォント（欧文）
+% \setmainfont{Century}
+% % sans-serifフォント（欧文）
+% % \setsansfont{Century Gothic}
+% % \setsansfont{Calibri}
+% \setsansfont{Yu Gothic}
+
+% \setmonofont[ItalicFont={RictyDiminishedDiscord-Oblique}, BoldFont={RictyDiminishedDiscord-Bold}, BoldItalicFont={RictyDiminishedDiscord-BoldOblique}]{RictyDiminishedDiscord-Regular}
+% \setCJKmonofont[ItalicFont={RictyDiminishedDiscord-Oblique}, BoldFont={RictyDiminishedDiscord-Bold}, BoldItalicFont={RictyDiminishedDiscord-BoldOblique}]{RictyDiminishedDiscord-Regular}
+
+% \setcounter{tocdepth}{3}
+% \setcounter{page}{-1}
+
+% セクションのスタイル変更
+\usepackage{titlesec}
+\titleformat*{\section}{\Large\bfseries\sffamily}
+\titleformat*{\subsection}{\normalsize\bfseries\sffamily}
+\titleformat*{\subsubsection}{\normalsize\bfseries\sffamily}
+\titleformat{\chapter}[hang]{\huge\bfseries\sffamily}{\chaptertitlename\ \thechapter \postchaptername}{1em}{} 
+
+% セクション番号の深さを指定(デフォルト: subsectionまで)
+\setcounter{secnumdepth}{4}
+\setcounter{tocdepth}{4}
+
+% キャプション設定
+\captionsetup{justification=centering}
+
+% 参照マクロ
+% \newcommand{\fref}[1]{\textbf{図\ref{#1}}}
+% \newcommand{\Fref}[1]{\textbf{式\ref{#1}}}
+% \newcommand{\tref}[1]{\textbf{表\ref{#1}}}
+\newcommand{\fref}[1]{図\ref{#1}}
+\newcommand{\Fref}[1]{式\ref{#1}}
+\newcommand{\tref}[1]{表\ref{#1}}
+
+% 数式マクロ
+\newcommand{\degree}[1]{#1^\circ}
+
+% 行間調整
+\renewcommand{\baselinestretch}{0.90}
+
+%%% タイトル設定 for 静大情報学部卒論スタイル %%%
+  \makeatletter
+    \def\thesis#1{\def\@thesis{#1}}
+    \def\teacher#1{\def\@teacher{#1}}
+    \def\id#1{\def\@id{#1}}
+    \def\department#1{\def\@department{#1}}
+
+    % \def\@maketitle{
+    \renewcommand{\maketitle}{
+      \vspace*{20mm}
+      \begin{center}
+        % 「修士論文」 or 「卒業論文」
+        {\huge \@thesis \par}
+        \vspace{10mm}
+        % 論文のタイトル部分
+        {\huge 題目 \par}
+        {\huge\ \@title \par}
+        \vspace{10mm}
+        % 報告者(氏名、学籍番号)
+        {\LARGE 報告者 \par}
+        {\LARGE 氏名：\ \@author \par}
+        {\LARGE 学籍番号:\ \@id \par}
+        \vspace{10mm}
+        % 指導教員
+        {\LARGE 指導教員 \par}
+        {\LARGE \@teacher \par}
+        \vspace{20mm}
+        % 提出年月日部分
+        {\Large 提出日 \par}
+        {\Large \@date \par}
+        % 所属
+        {\Large \@department \par}
+      \end{center}
+      % \par\vskip 1.5em
+    }
+  \makeatother
+
+% タイトル個別設定
+  \thesis{卒業論文}
+  \title{ドローン空撮映像を用いた災害領域検出}
+  \author{室永\ 将門}
+  \id{7071-0090}
+  \teacher{佐治\ 斉}
+  \department{静岡大学\ 情報学部\ 情報科学科}
+  \date{令和02年2月10日}
+
+% 図表探索パス指定
+\graphicspath{{img/}{../img/}}
+
+% 本文
+\begin{document}
+  % タイトル出力
+  \begin{titlepage}
+    \maketitle
+  \end{titlepage}
+
+
+  % 目次出力
+  \tableofcontents
+
+  % 第1章 - はじめに
+  \subfile{chapter/1_intro}
+  % 第2章 - 手法
+  \subfile{chapter/2_methods}
+  % 第3章 - 実験
+  \subfile{chapter/3_experiment}
+  % 第4章 - まとめ
+  \subfile{chapter/4_conclusion}
+
+  % 参考文献リスト
+  \bibliographystyle{junsrt}
+  \bibliography{MyRef}
+
+  % 謝辞
+  \chapter*{謝辞} % (fold)
+    \label{cha:謝辞}
+    \addcontentsline{toc}{chapter}{謝辞}
+
+    本研究をすすめるにあたり，熱心なご指導，適切な御助言をいただきました佐治斉教授に，厚く御礼申し上げます．
+
+    また，数々の御意見，御協力いただきました佐治研究室の皆様に深く感謝いたします．
+
+    \vspace*{3ex}
+    \begin{flushright}
+      以上
+    \end{flushright}
+  % chapter 謝辞 (end)
+
+\end{document}
